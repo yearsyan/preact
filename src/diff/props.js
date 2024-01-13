@@ -1,12 +1,14 @@
 import { IS_NON_DIMENSIONAL } from '../constants';
 import options from '../options';
 
+let disableStyleAddUnit = false
+
 function setStyle(style, key, value) {
 	if (key[0] === '-') {
 		style.setProperty(key, value == null ? '' : value);
 	} else if (value == null) {
 		style[key] = '';
-	} else if (typeof value != 'number' || IS_NON_DIMENSIONAL.test(key)) {
+	} else if (typeof value != 'number' || IS_NON_DIMENSIONAL.test(key) || disableStyleAddUnit) {
 		style[key] = value;
 	} else {
 		style[key] = value + 'px';
@@ -149,4 +151,9 @@ function eventProxy(e) {
  */
 function eventProxyCapture(e) {
 	return this._listeners[e.type + true](options.event ? options.event(e) : e);
+}
+
+
+export function setShoudDisableStyleAddUnit(value) {
+	disableStyleAddUnit = value
 }

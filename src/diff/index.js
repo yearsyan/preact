@@ -11,6 +11,10 @@ import { setProperty } from './props';
 import { assign, isArray, removeNode, slice } from '../util';
 import options from '../options';
 
+let createElementFunc = null
+let createSVGElementFunc = null
+let createTextElementFunc = null
+
 /**
  * Diff two virtual nodes and apply proper changes to the DOM
  * @param {PreactElement} parentDom The parent of the DOM element
@@ -397,13 +401,13 @@ function diffElementNodes(
 
 	if (dom == null) {
 		if (nodeType === null) {
-			return document.createTextNode(newProps);
+			return (createTextElementFunc || document.createTextNode)(newProps);
 		}
 
 		if (isSvg) {
-			dom = document.createElementNS('http://www.w3.org/2000/svg', nodeType);
+			dom = (createSVGElementFunc || document.createElementNS)('http://www.w3.org/2000/svg', nodeType);
 		} else {
-			dom = document.createElement(nodeType, newProps.is && newProps);
+			dom = (createElementFunc || document.createElement)(nodeType, newProps.is && newProps);
 		}
 
 		// we created a new parent, so none of the previously attached children can be reused:
@@ -604,4 +608,10 @@ export function unmount(vnode, parentVNode, skipRemove) {
 /** The `.render()` method for a PFC backing instance. */
 function doRender(props, state, context) {
 	return this.constructor(props, context);
+}
+
+export function setCreateElementFunction(elementFunc, textFunc, svgFunc) {
+	createElementFunc = elementFunc
+	createTextElementFunc = textFunc
+	createSVGElementFunc = svgFunc
 }
