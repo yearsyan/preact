@@ -396,5 +396,5 @@ export interface PreactContext<T> extends Context<T> {}
 
 export function createContext<T>(defaultValue: T): Context<T>;
 
-export function setCreateElementFunction(): void
+export function setCreateElementFunction(ele, text, svg): void
 export function setShoudDisableStyleAddUnit(value: boolean): void

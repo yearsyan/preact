@@ -2890,7 +2890,9 @@ export namespace JSXInternal {
 		html: HTMLAttributes<HTMLHtmlElement>;
 		i: HTMLAttributes<HTMLElement>;
 		iframe: HTMLAttributes<HTMLIFrameElement>;
-		img: HTMLAttributes<HTMLImageElement>;
+		img: HTMLAttributes<HTMLImageElement> | {
+			mode: 'heightFix' | 'widthFix' | 'normal' | undefined
+		};
 		input: HTMLAttributes<HTMLInputElement>;
 		ins: HTMLAttributes<HTMLModElement>;
 		kbd: HTMLAttributes<HTMLElement>;
